@@ -1,3 +1,19 @@
+#-----------------------------------------------------
+
+STUDENT_ID = 
+ASSIGNMENT_NO = 
+
+ifndef STUDENT_ID
+$(error Please set STUDENT_ID in Makefile)
+endif
+ifndef ASSIGNMENT_NO
+$(error Please set ASSIGNMENT_ID in Makefile)
+endif
+_STUDENT_ID = $(strip $(STUDENT_ID))
+_ASSIGNMENT_NO = $(strip $(ASSIGNMENT_NO))
+
+#-----------------------------------------------------
+
 K=kernel
 U=user
 
@@ -190,3 +206,13 @@ check-qemu-version:
 		echo "ERROR: Need qemu version >= $(MIN_QEMU_VERSION)"; \
 		exit 1; \
 	fi
+
+
+TARBALL = $(_STUDENT_ID)_$(_ASSIGNMENT_NO).tar.gz
+
+submit:
+	make clean
+	@rm -f $(TARBALL)
+	@tar czvf $(TARBALL) ./Makefile ./$K ./$U ./mkfs
+	@echo "Please submit $(TARBALL) file"
+
